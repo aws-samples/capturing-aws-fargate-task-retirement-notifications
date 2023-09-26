@@ -10,7 +10,7 @@ logger.setLevel(logging.INFO)
 
 
 def retirement_date(raw_date):
-    return datetime.strptime(raw_date, '%a,%d%b%Y%H:%M:%S%Z').strftime('%Y-%m-%d')
+    return datetime.strptime(raw_date, '%a, %d %b %Y %H:%M:%S %Z').strftime('%Y-%m-%d')
 
 
 def standalone_task_message(resources, event):
@@ -42,9 +42,9 @@ def service_message(resources, event):
 
     service_list = ''
     for service in resources:
-        service_split = service.split('/')
+        service_split = service.split('|')
         service_list += ('\nCluster: _' +
-                         service_split[0] + '_ Service: _' + service_split[1] + '_')
+                         service_split[0].rstrip() + '_ Service: _' + service_split[1].lstrip() + '_')
 
     message = str(
         'AWS Fargate tasks will be retired on *' + retirement_date(event['detail']['startTime']) + '*.' +
@@ -80,7 +80,7 @@ def lambda_handler(event, context):
     resources = event['resources']
     if ':' in resources[0]:
         message = standalone_task_message(resources, event)
-    elif len(resources[0].split('/')) == 2:
+    elif '|' in resources[0]:
         message = service_message(resources, event)
     else:
         raise 'Unable to parse affected tasks'
