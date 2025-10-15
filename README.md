@@ -8,7 +8,7 @@ blog](https://aws.amazon.com/blogs/containers/improving-operational-visibility-w
 1. Build the artifact with AWS SAM
 
     ```bash
-    $ sam build --template cloudformation.yaml
+    $ sam build --template cloudformation.yaml --use-container
     ```
 
 2. Deploy the artifact with AWS SAM, adding the Slack URI and Slack Channel in

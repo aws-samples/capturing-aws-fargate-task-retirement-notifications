@@ -15,7 +15,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Description: 'Capture Task Retirement Events'
-      Runtime: python3.9
+      Runtime: python3.13
       Handler: app.lambda_handler
       CodeUri: src
       Environment:
